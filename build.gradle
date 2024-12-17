@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+}
+
+group = 'group.aelysium'
+version = '0.0.1'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    withJavadocJar()
+    withSourcesJar()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:24.1.0'
+    implementation 'com.google.code.gson:gson:2.11.0'
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
