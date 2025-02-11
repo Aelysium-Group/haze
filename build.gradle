@@ -1,9 +1,18 @@
-plugins {
-    id 'java'
+buildscript {
+    repositories {
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath 'io.github.goooler.shadow:shadow-gradle-plugin:8.1.8'
+    }
 }
 
-group = 'group.aelysium'
-version = '0.0.1'
+apply plugin: 'java'
+apply plugin: 'java-library'
+apply plugin: 'io.github.goooler.shadow'
+
+group = "group.aelysium"
+version = "0.0.8"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -28,3 +37,21 @@ compileJava {
 javadoc {
     options.encoding = 'UTF-8'
 }
+
+shadowJar {
+    archiveBaseName.set(rootProject.name)
+    archiveClassifier.set('')
+    mergeServiceFiles()
+}
+
+tasks.named('jar').configure {
+    enabled = false
+}
+tasks.withType(JavaCompile) {
+    options.compilerArgs += ['-Xdoclint:none']
+}
+tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+jar.finalizedBy(shadowJar)

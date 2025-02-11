@@ -1,4 +1,7 @@
-package group.aelysium.lib;
+package group.aelysium.haze.lib;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -6,6 +9,7 @@ public class Filterable {
     private final List<KeyValue<String, FilterValue>> filters = new ArrayList<>();
     private final Set<String> groupBy = new HashSet<>();
     private final List<KeyValue<String, Ordering>> orderBy = new ArrayList<>();
+    private Integer limit = null;
 
     /**
      * Lets the caller filter their request based on typical filtering options.
@@ -13,10 +17,10 @@ public class Filterable {
      * @param key The key to filter for.
      * @param value The {@link FilterValue} to filter with.
      */
-    public void filterBy(String key, FilterValue value) {
+    public void filterBy(@NotNull String key, @NotNull FilterValue value) {
         this.filters.add(new KeyValue<>(key, value));
     }
-    public List<KeyValue<String, FilterValue>> filterBy() {
+    public @NotNull List<KeyValue<String, FilterValue>> filterBy() {
         return Collections.unmodifiableList(this.filters);
     }
 
@@ -25,11 +29,22 @@ public class Filterable {
      * Groupings will be ordered in the order they are added.
      * @param key The key to group by.
      */
-    public void groupBy(String key) {
+    public void groupBy(@NotNull String key) {
         this.groupBy.add(key);
     }
-    public Set<String> groupBy() {
+    public @NotNull Set<String> groupBy() {
         return Collections.unmodifiableSet(this.groupBy);
+    }
+
+    /**
+     * Lets the caller limit the number of entries that are returned.
+     * @param limit The limit to use.
+     */
+    public void limit(Integer limit) {
+        this.limit = limit;
+    }
+    public @Nullable Integer limit() {
+        return this.limit;
     }
 
     /**
@@ -38,10 +53,10 @@ public class Filterable {
      * @param key The key to order by.
      * @param value The ordering to enforce.
      */
-    public void orderBy(String key, Ordering value) {
+    public void orderBy(@NotNull String key, @NotNull Ordering value) {
         this.orderBy.add(new KeyValue<>(key, value));
     }
-    public List<KeyValue<String, Ordering>> orderBy() {
+    public @NotNull List<KeyValue<String, Ordering>> orderBy() {
         return Collections.unmodifiableList(this.orderBy);
     }
 
@@ -64,13 +79,15 @@ public class Filterable {
 
         /**
          * Validates that the original value contains the passed value.
-         * In instances such as numbers, this option will operate the same as {@link #EQUALS}.
+         * In instances such as numbers, the actual output is unpredictable and not supported.
          * In instances such as strings, this option will search to original string to find a version of the substring within it.
          */
         CONTAINS,
 
         /**
          * Validates that the original value does not contain the passed value.
+         * In instances such as numbers, the actual output is unpredictable and not supported.
+         * In instances such as strings, this option will search to original string to ensure a version of the substring isn't within it.
          */
         NOT_CONTAINS,
 
@@ -92,6 +109,16 @@ public class Filterable {
         /**
          * Validates that the passed value is less than or equal the original value.
          */
-        LESS_THAN_OR_EQUAL
+        LESS_THAN_OR_EQUAL,
+
+        /**
+         * Validates that the passed value is null.
+         */
+        IS_NULL,
+
+        /**
+         * Validates that the passed value is not null.
+         */
+        IS_NOT_NULL
     }
 }
