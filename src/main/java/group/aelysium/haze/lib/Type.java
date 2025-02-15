@@ -19,11 +19,11 @@ public class Type {
         return type;
     }
 
-    public Type unique() {
-        this.unique = true;
+    public Type unique(boolean unique) {
+        this.unique = unique;
         return this;
     }
-    public boolean isUnique() {
+    public boolean unique() {
         return this.unique;
     }
 
@@ -35,19 +35,19 @@ public class Type {
         return this.length;
     }
 
-    public Type nullable() {
-        this.nullable = true;
+    public Type nullable(boolean nullable) {
+        this.nullable = nullable;
         return this;
     }
-    public boolean isNullable() {
+    public boolean nullable() {
         return this.nullable;
     }
 
-    public Type primaryKey() {
-        this.primaryKey = true;
+    public Type primaryKey(boolean primaryKey) {
+        this.primaryKey = primaryKey;
         return this;
     }
-    public boolean isPrimaryKey() {
+    public boolean primaryKey() {
         return this.primaryKey;
     }
 

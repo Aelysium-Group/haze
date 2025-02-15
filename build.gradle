@@ -12,7 +12,7 @@ apply plugin: 'java-library'
 apply plugin: 'io.github.goooler.shadow'
 
 group = "group.aelysium"
-version = "0.0.8"
+version = "0.0.10"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21

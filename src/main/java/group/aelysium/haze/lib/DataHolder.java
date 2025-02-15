@@ -21,7 +21,7 @@ public class DataHolder {
     }
     public void addKey(@NotNull String name, @NotNull Type type) {
         this.keys.put(name, type);
-        if(type.isPrimaryKey()) {
+        if(type.primaryKey()) {
             if(primaryKey == null) primaryKey = name;
             else throw new RuntimeException("You can't specify more than a single primary key per DataHolder. Caused by: "+this.name+" - "+name);
         }
