@@ -1,8 +1,8 @@
 package group.aelysium.haze;
 
-import group.aelysium.haze.exceptions.HazeException;
 import group.aelysium.haze.lib.DataHolder;
-import group.aelysium.haze.query.*;
+import group.aelysium.haze.lib.Filter;
+import group.aelysium.haze.requests.*;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -48,13 +48,20 @@ public abstract class Database implements AutoCloseable {
      * @return A new request which will read database entries when executed.
      */
     public abstract ReadRequest newReadRequest(@NotNull String target);
-
+    
     /**
      * @param target The target table or collection that this request is for.
      *               To prevent over complicating the API, Haze only allows you to target a single table or collection per request.
      * @return A new request which will update database entries when executed.
      */
     public abstract UpdateRequest newUpdateRequest(@NotNull String target);
+    
+    /**
+     * @param target The target table or collection that this request is for.
+     *               To prevent over complicating the API, Haze only allows you to target a single table or collection per request.
+     * @return A new request which will update database entries when executed. If no entries exist for the provided filter, one will instead be inserted.
+     */
+    public abstract UpsertRequest newUpsertRequest(@NotNull String target);
 
     /**
      * @param target The target table or collection that this request is for.

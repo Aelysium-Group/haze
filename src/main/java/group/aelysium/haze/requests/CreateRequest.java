@@ -1,4 +1,4 @@
-package group.aelysium.haze.query;
+package group.aelysium.haze.requests;
 
 import group.aelysium.haze.Database;
 import group.aelysium.haze.exceptions.HazeCastingException;

@@ -1,19 +1,20 @@
-package group.aelysium.haze.query;
+package group.aelysium.haze.requests;
 
 import group.aelysium.haze.Database;
 import group.aelysium.haze.exceptions.HazeCastingException;
 import group.aelysium.haze.exceptions.HazeException;
-import group.aelysium.haze.lib.Filterable;
+import group.aelysium.haze.lib.Filter;
 import group.aelysium.haze.lib.DataRequest;
+import group.aelysium.haze.lib.Filterable;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class UpdateRequest extends DataRequest {
+public abstract class UpdateRequest extends DataRequest implements Filterable<UpdateRequest> {
     protected final Map<String, Object> parameters = new HashMap<>();
-    protected Filterable filters = new Filterable();
+    protected Filter filter = null;
 
     public UpdateRequest(
             @NotNull Database database,
@@ -21,16 +22,19 @@ public abstract class UpdateRequest extends DataRequest {
     ) {
         super(database, target);
     }
-    public void parameter(@NotNull String key, @Nullable Object value) {
+    public UpdateRequest parameter(@NotNull String key, @Nullable Object value) {
         this.parameters.put(key, value);
+        return this;
     }
-
-    public Filterable filters() {
-        return this.filters;
+    
+    @Override
+    public UpdateRequest withFilter(@NotNull Filter filter) {
+        this.filter = filter;
+        return this;
     }
 
     /**
-     * Inserts the provided {@link #parameters} into the table for any and all entries that match {@link #filters}.
+     * Inserts the provided {@link #parameters} into the data holder for any and all entries that match the provided filters.
      * @return The number of updated entries.
      * @throws HazeException If there was an issue interacting with the database.
      * @throws HazeCastingException If there was an issue converting the response into the type <T>.

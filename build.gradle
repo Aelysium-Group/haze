@@ -3,16 +3,16 @@ buildscript {
         gradlePluginPortal()
     }
     dependencies {
-        classpath 'io.github.goooler.shadow:shadow-gradle-plugin:8.1.8'
+        classpath 'com.gradleup.shadow:shadow-gradle-plugin:9.0.0-beta4'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'java-library'
-apply plugin: 'io.github.goooler.shadow'
+apply plugin: 'com.gradleup.shadow'
 
 group = "group.aelysium"
-version = "0.0.10"
+version = "0.0.13"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_21
