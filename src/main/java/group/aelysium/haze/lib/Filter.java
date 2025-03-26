@@ -19,24 +19,24 @@ public class Filter {
         this.filters.add(filter);
     }
     
-    public Filter AND(@NotNull String key, @NotNull Filter.Value value) {
-        this.add(Operator.AND, new KeyValue<>(key, value));
+    public Filter AND(@NotNull String key, @NotNull Object value, @NotNull Qualifier equality) {
+        this.add(Operator.AND, new KeyValue<>(key, new Value(value, equality)));
         return this;
     }
-    public Filter OR(@NotNull String key, @NotNull Filter.Value value) {
-        this.add(Operator.OR, new KeyValue<>(key, value));
+    public Filter OR(@NotNull String key, @NotNull Object value, @NotNull Qualifier equality) {
+        this.add(Operator.OR, new KeyValue<>(key, new Value(value, equality)));
         return this;
     }
-    public Filter AND_NOT(@NotNull String key, @NotNull Filter.Value value) {
-        this.add(Operator.AND_NOT, new KeyValue<>(key, value));
+    public Filter AND_NOT(@NotNull String key, @NotNull Object value, @NotNull Qualifier equality) {
+        this.add(Operator.AND_NOT, new KeyValue<>(key, new Value(value, equality)));
         return this;
     }
-    public Filter OR_NOT(@NotNull String key, @NotNull Filter.Value value) {
-        this.add(Operator.OR_NOT, new KeyValue<>(key, value));
+    public Filter OR_NOT(@NotNull String key, @NotNull Object value, @NotNull Qualifier equality) {
+        this.add(Operator.OR_NOT, new KeyValue<>(key, new Value(value, equality)));
         return this;
     }
-    public Filter XOR(@NotNull String key, @NotNull Filter.Value value) {
-        this.add(Operator.EXCLUSIVE_OR, new KeyValue<>(key, value));
+    public Filter XOR(@NotNull String key, @NotNull Object value, @NotNull Qualifier equality) {
+        this.add(Operator.EXCLUSIVE_OR, new KeyValue<>(key, new Value(value, equality)));
         return this;
     }
     
@@ -81,8 +81,8 @@ public class Filter {
      * @param value The value to filter with.
      * @return A new Filter.
      */
-    public static Filter by(@NotNull String key, @NotNull Filter.Value value) {
-        return new Filter(new KeyValue<>(key, value));
+    public static Filter by(@NotNull String key, @NotNull Object value, @NotNull Qualifier equality) {
+        return new Filter(new KeyValue<>(key, new Value(value, equality)));
     }
     
     public record Value(Object value, Qualifier equality) {}
@@ -93,59 +93,71 @@ public class Filter {
         OR_NOT,
         EXCLUSIVE_OR
     }
-    public enum Qualifier {
-        /**
-         * Validates that the two values are equal.
-         */
-        EQUALS,
+    public record Qualifier(String value) {
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            Qualifier qualifier = (Qualifier) o;
+            return Objects.equals(value, qualifier.value);
+        }
 
-        /**
-         * Validates that the two values are not equal.
-         */
-        NOT_EQUALS,
-
-        /**
-         * Validates that the original value contains the passed value.
-         * This option is only valid for string data types.
-         * If this is used with any other type, the behavior is undefined.
-         */
-        CONTAINS,
-
-        /**
-         * Validates that the original value does not contain the passed value.
-         * This option is only valid for string data types.
-         * If this is used with any other type, the behavior is undefined.
-         */
-        NOT_CONTAINS,
-
-        /**
-         * Validates that the passed value is greater than the original value.
-         */
-        GREATER_THAN,
-
-        /**
-         * Validates that the passed value is less than the original value.
-         */
-        LESS_THAN,
-
-        /**
-         * Validates that the passed value is greater than or equal to the original value.
-         */
-        GREATER_THAN_OR_EQUAL,
-
-        /**
-         * Validates that the passed value is less than or equal the original value.
-         */
-        LESS_THAN_OR_EQUAL,
-
-        /**
-         * Validates that the passed value is null.
-         */
-        IS_NULL,
-
-        /**
-         * Validates that the passed value is not null.
-         */
-        IS_NOT_NULL
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(value);
+        }
     }
+
+    /**
+     * Validates that the two values are equal.
+     */
+    public static final Qualifier EQUALS = new Qualifier("EQUALS");
+
+    /**
+     * Validates that the two values are not equal.
+     */
+    public static final Qualifier NOT_EQUALS = new Qualifier("NOT_EQUALS");
+
+    /**
+     * Validates that the original value contains the passed value.
+     * This option is only valid for string data types.
+     * If this is used with any other type, the behavior is undefined.
+     */
+    public static final Qualifier CONTAINS = new Qualifier("CONTAINS");
+
+    /**
+     * Validates that the original value does not contain the passed value.
+     * This option is only valid for string data types.
+     * If this is used with any other type, the behavior is undefined.
+     */
+    public static final Qualifier NOT_CONTAINS = new Qualifier("NOT_CONTAINS");
+
+    /**
+     * Validates that the passed value is greater than the original value.
+     */
+    public static final Qualifier GREATER_THAN = new Qualifier("GREATER_THAN");
+
+    /**
+     * Validates that the passed value is less than the original value.
+     */
+    public static final Qualifier LESS_THAN = new Qualifier("LESS_THAN");
+
+    /**
+     * Validates that the passed value is greater than or equal to the original value.
+     */
+    public static final Qualifier GREATER_THAN_OR_EQUAL = new Qualifier("GREATER_THAN_OR_EQUAL");
+
+    /**
+     * Validates that the passed value is less than or equal the original value.
+     */
+    public static final Qualifier LESS_THAN_OR_EQUAL = new Qualifier("LESS_THAN_OR_EQUAL");
+
+    /**
+     * Validates that the passed value is null.
+     */
+    public static final Qualifier IS_NULL = new Qualifier("IS_NULL");
+
+    /**
+     * Validates that the passed value is not null.
+     */
+    public static final Qualifier IS_NOT_NULL = new Qualifier("IS_NOT_NULL");
 }
