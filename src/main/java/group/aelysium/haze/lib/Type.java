@@ -2,8 +2,6 @@ package group.aelysium.haze.lib;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class Type {
     private final DataType type;
     private boolean nullable = false;
@@ -52,19 +50,34 @@ public class Type {
     }
 
     public static Type STRING() {
-        return new Type(DataType.STRING);
+        return new Type(DataType.STRING).length(1000);
     }
     public static Type STRING(int length) {
         return new Type(DataType.STRING).length(length);
     }
     public static Type INTEGER() {
-        return new Type(DataType.INTEGER);
+        return new Type(DataType.INTEGER).length(4);
     }
     public static Type INTEGER(int size) {
         return new Type(DataType.INTEGER).length(size);
     }
+    public static Type UNSIGNED_INTEGER() {
+        return new Type(DataType.UNSIGNED_INTEGER).length(4);
+    }
+    public static Type UNSIGNED_INTEGER(int size) {
+        return new Type(DataType.UNSIGNED_INTEGER).length(size);
+    }
     public static Type DECIMAL() {
-        return new Type(DataType.DECIMAL);
+        return new Type(DataType.DECIMAL).length(4);
+    }
+    public static Type DECIMAL(int size) {
+        return new Type(DataType.DECIMAL).length(size);
+    }
+    public static Type UNSIGNED_DECIMAL() {
+        return new Type(DataType.UNSIGNED_DECIMAL).length(4);
+    }
+    public static Type UNSIGNED_DECIMAL(int size) {
+        return new Type(DataType.UNSIGNED_DECIMAL).length(size);
     }
     public static Type BOOLEAN() {
         return new Type(DataType.BOOLEAN);
@@ -91,7 +104,9 @@ public class Type {
     public enum DataType {
         STRING,
         INTEGER,
+        UNSIGNED_INTEGER,
         DECIMAL,
+        UNSIGNED_DECIMAL,
         BOOLEAN,
         DATE,
         DATETIME,

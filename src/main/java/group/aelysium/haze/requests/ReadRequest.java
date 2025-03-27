@@ -91,6 +91,6 @@ public abstract class ReadRequest extends DataRequest implements Orderable<ReadR
      */
     public abstract <T> @NotNull Set<T> executeAndFilter(
             @NotNull Class<T> clazz,
-            @NotNull Function<@NotNull T, @NotNull Boolean> filter
+            @NotNull Function<@NotNull DataEntry, @NotNull Boolean> filter
     ) throws Exception;
 }
